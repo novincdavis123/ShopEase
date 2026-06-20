@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../core/widgets/app_loader.dart';
+import '../../../../core/widgets/empty_state.dart';
+import '../../../../core/widgets/error_view.dart';
 import 'package:shopease/features/cart/presentation/pages/cart_page.dart';
 import 'package:shopease/features/theme/presentation/widgets/theme_toggle_button.dart';
+
 import '../bloc/product_bloc.dart';
 import '../bloc/product_event.dart';
 import '../bloc/product_state.dart';
@@ -36,21 +41,25 @@ class ProductListPage extends StatelessWidget {
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
           if (state is ProductLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoader();
           }
 
           if (state is ProductError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text(state.message, textAlign: TextAlign.center),
-              ),
+            return ErrorView(
+              message: state.message,
+              onRetry: () {
+                context.read<ProductBloc>().add(const FetchProducts());
+              },
             );
           }
 
           if (state is ProductLoaded) {
             if (state.products.isEmpty) {
-              return const Center(child: Text('No products found'));
+              return const EmptyState(
+                icon: Icons.shopping_bag_outlined,
+                title: 'No Products Found',
+                subtitle: 'Pull down to refresh or check back again later.',
+              );
             }
 
             return RefreshIndicator(

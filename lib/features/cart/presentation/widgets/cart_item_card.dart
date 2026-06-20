@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../../../../core/widgets/app_loader.dart';
+import '../../../../core/widgets/price_text.dart';
 import '../../data/models/cart_item_model.dart';
 
 class CartItemCard extends StatelessWidget {
@@ -19,37 +21,40 @@ class CartItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// Product Image
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(14),
               child: CachedNetworkImage(
                 imageUrl: item.thumbnail,
-                width: 80,
-                height: 80,
+                width: 90,
+                height: 90,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => const SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
+                placeholder: (_, __) => const SizedBox(
+                  width: 90,
+                  height: 90,
+                  child: AppLoader(size: 28),
                 ),
-                errorWidget: (context, url, error) => const SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: Icon(Icons.broken_image),
+                errorWidget: (_, __, ___) => const SizedBox(
+                  width: 90,
+                  height: 90,
+                  child: Center(
+                    child: Icon(Icons.broken_image_outlined, size: 36),
+                  ),
                 ),
               ),
             ),
 
-            const SizedBox(width: 12),
+            const SizedBox(width: 14),
 
+            /// Product Details
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,24 +71,29 @@ class CartItemCard extends StatelessWidget {
 
                   const SizedBox(height: 8),
 
+                  PriceText(price: item.price, fontSize: 16),
+
+                  const SizedBox(height: 6),
+
                   Text(
-                    "\$${item.price.toStringAsFixed(2)}",
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    "Quantity: ${item.quantity}",
+                    style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
 
-                  Text(
-                    "Subtotal: \$${item.totalPrice.toStringAsFixed(2)}",
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                  Row(
+                    children: [
+                      const Text("Subtotal: ", style: TextStyle(fontSize: 13)),
+
+                      PriceText(price: item.totalPrice, fontSize: 14),
+                    ],
                   ),
                 ],
               ),
             ),
 
+            /// Actions
             Column(
               children: [
                 IconButton(
@@ -91,27 +101,40 @@ class CartItemCard extends StatelessWidget {
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
                 ),
 
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: onDecrease,
-                      icon: const Icon(Icons.remove_circle_outline),
-                    ),
-
-                    Text(
-                      "${item.quantity}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        constraints: const BoxConstraints(),
+                        padding: const EdgeInsets.all(8),
+                        onPressed: onDecrease,
+                        icon: const Icon(Icons.remove, size: 18),
                       ),
-                    ),
 
-                    IconButton(
-                      onPressed: onIncrease,
-                      icon: const Icon(Icons.add_circle_outline),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          "${item.quantity}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+
+                      IconButton(
+                        constraints: const BoxConstraints(),
+                        padding: const EdgeInsets.all(8),
+                        onPressed: onIncrease,
+                        icon: const Icon(Icons.add, size: 18),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../core/widgets/app_loader.dart';
+import '../../../../core/widgets/price_text.dart';
 import '../../../cart/data/models/cart_item_model.dart';
 import '../../../cart/presentation/bloc/cart_bloc.dart';
 import '../../../cart/presentation/bloc/cart_event.dart';
@@ -14,13 +17,14 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        clipBehavior: Clip.antiAlias,
+    return Card(
+      elevation: 3,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -33,10 +37,10 @@ class ProductCard extends StatelessWidget {
                   imageUrl: product.thumbnail,
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) =>
-                      const Center(child: Icon(Icons.broken_image)),
+                  placeholder: (_, __) => const AppLoader(size: 30),
+                  errorWidget: (_, __, ___) => const Center(
+                    child: Icon(Icons.broken_image_outlined, size: 40),
+                  ),
                 ),
               ),
             ),
@@ -45,7 +49,7 @@ class ProductCard extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -75,44 +79,50 @@ class ProductCard extends StatelessWidget {
 
                     Row(
                       children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                        const Icon(Icons.star, size: 16, color: Colors.amber),
                         const SizedBox(width: 4),
                         Text(
                           product.rating.toStringAsFixed(1),
-                          style: const TextStyle(fontSize: 13),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
 
                     Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            "\$${product.price.toStringAsFixed(2)}",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: PriceText(price: product.price, fontSize: 18),
                         ),
 
-                        IconButton(
-                          onPressed: () {
-                            context.read<CartBloc>().add(
-                              AddToCart(CartItemModel.fromProduct(product)),
-                            );
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primaryContainer,
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              context.read<CartBloc>().add(
+                                AddToCart(CartItemModel.fromProduct(product)),
+                              );
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('${product.title} added to cart'),
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.add_shopping_cart),
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    '${product.title} added to cart',
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.add_shopping_cart_outlined),
+                          ),
                         ),
                       ],
                     ),
