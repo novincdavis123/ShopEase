@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopease/features/cart/presentation/pages/cart_page.dart';
 import '../../../../../injection.dart';
 import '../bloc/product_bloc.dart';
 import '../bloc/product_event.dart';
@@ -21,7 +22,19 @@ class ProductListPage extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.shopping_cart_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CartPage()),
+                );
+              },
+            ),
+          ],
         ),
+
         body: BlocBuilder<ProductBloc, ProductState>(
           builder: (context, state) {
             if (state is ProductLoading) {
@@ -65,13 +78,6 @@ class ProductListPage extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => ProductDetailPage(product: product),
-                          ),
-                        );
-                      },
-                      onAddToCart: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('${product.title} added to cart'),
                           ),
                         );
                       },

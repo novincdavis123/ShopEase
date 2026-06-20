@@ -1,18 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../cart/data/models/cart_item_model.dart';
+import '../../../cart/presentation/bloc/cart_bloc.dart';
+import '../../../cart/presentation/bloc/cart_event.dart';
 import '../../data/models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
   final VoidCallback? onTap;
-  final VoidCallback? onAddToCart;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-    this.onTap,
-    this.onAddToCart,
-  });
+  const ProductCard({super.key, required this.product, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +101,17 @@ class ProductCard extends StatelessWidget {
                         ),
 
                         IconButton(
-                          onPressed: onAddToCart,
+                          onPressed: () {
+                            context.read<CartBloc>().add(
+                              AddToCart(CartItemModel.fromProduct(product)),
+                            );
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${product.title} added to cart'),
+                              ),
+                            );
+                          },
                           icon: const Icon(Icons.add_shopping_cart),
                         ),
                       ],
