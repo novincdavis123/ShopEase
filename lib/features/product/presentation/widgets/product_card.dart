@@ -29,14 +29,17 @@ class ProductCard extends StatelessWidget {
             /// Product Image
             Expanded(
               flex: 6,
-              child: CachedNetworkImage(
-                imageUrl: product.thumbnail,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                    const Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) =>
-                    const Center(child: Icon(Icons.broken_image)),
+              child: Hero(
+                tag: product.id,
+                child: CachedNetworkImage(
+                  imageUrl: product.thumbnail,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) =>
+                      const Center(child: Icon(Icons.broken_image)),
+                ),
               ),
             ),
 
@@ -62,6 +65,8 @@ class ProductCard extends StatelessWidget {
 
                     Text(
                       product.category,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey.shade600,
@@ -75,7 +80,7 @@ class ProductCard extends StatelessWidget {
                         const Icon(Icons.star, color: Colors.amber, size: 16),
                         const SizedBox(width: 4),
                         Text(
-                          product.rating.toString(),
+                          product.rating.toStringAsFixed(1),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ],
@@ -85,15 +90,17 @@ class ProductCard extends StatelessWidget {
 
                     Row(
                       children: [
-                        Text(
-                          "\$${product.price.toStringAsFixed(2)}",
-                          style: const TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: Text(
+                            "\$${product.price.toStringAsFixed(2)}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-
-                        const Spacer(),
 
                         IconButton(
                           onPressed: onAddToCart,

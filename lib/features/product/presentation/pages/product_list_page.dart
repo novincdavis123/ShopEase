@@ -5,6 +5,7 @@ import '../bloc/product_bloc.dart';
 import '../bloc/product_event.dart';
 import '../bloc/product_state.dart';
 import '../widgets/product_card.dart';
+import 'product_detail_page.dart';
 
 class ProductListPage extends StatelessWidget {
   const ProductListPage({super.key});
@@ -52,7 +53,7 @@ class ProductListPage extends StatelessWidget {
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
-                    childAspectRatio: 0.62,
+                    childAspectRatio: 0.55,
                   ),
                   itemBuilder: (context, index) {
                     final product = state.products[index];
@@ -60,7 +61,12 @@ class ProductListPage extends StatelessWidget {
                     return ProductCard(
                       product: product,
                       onTap: () {
-                        // Navigate to Product Detail Page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ProductDetailPage(product: product),
+                          ),
+                        );
                       },
                       onAddToCart: () {
                         ScaffoldMessenger.of(context).showSnackBar(
