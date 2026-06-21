@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../../../core/widgets/app_loader.dart';
+
 import '../../../../core/widgets/price_text.dart';
 import '../../data/models/cart_item_model.dart';
 
@@ -37,16 +37,18 @@ class CartItemCard extends StatelessWidget {
                 width: 90,
                 height: 90,
                 fit: BoxFit.cover,
-                placeholder: (_, __) => const SizedBox(
+
+                placeholder: (_, _) => Container(
                   width: 90,
                   height: 90,
-                  child: AppLoader(size: 28),
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 ),
-                errorWidget: (_, __, ___) => const SizedBox(
+
+                errorWidget: (_, _, _) => const SizedBox(
                   width: 90,
                   height: 90,
                   child: Center(
-                    child: Icon(Icons.broken_image_outlined, size: 36),
+                    child: Icon(Icons.broken_image_outlined, size: 32),
                   ),
                 ),
               ),

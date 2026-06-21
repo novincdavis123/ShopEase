@@ -20,6 +20,8 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
         title: const Text(
           "My Cart",
           style: TextStyle(fontWeight: FontWeight.bold),

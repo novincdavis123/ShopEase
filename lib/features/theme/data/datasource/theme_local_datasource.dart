@@ -1,26 +1,24 @@
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:shopease/core/constants/app_constants.dart';
 
 class ThemeLocalDataSource {
-  static const String boxName = 'theme_box';
-  static const String themeKey = 'is_dark_mode';
-
   Future<Box> _openBox() async {
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box(boxName);
+    if (Hive.isBoxOpen(AppConstants.themeBoxName)) {
+      return Hive.box(AppConstants.themeBoxName);
     }
 
-    return await Hive.openBox(boxName);
+    return await Hive.openBox(AppConstants.themeBoxName);
   }
 
   Future<bool> getThemeMode() async {
     final box = await _openBox();
 
-    return box.get(themeKey, defaultValue: false) ?? false;
+    return box.get(AppConstants.themeKey, defaultValue: false) ?? false;
   }
 
   Future<void> saveThemeMode(bool isDark) async {
     final box = await _openBox();
 
-    await box.put(themeKey, isDark);
+    await box.put(AppConstants.themeKey, isDark);
   }
 }

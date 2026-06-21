@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../core/widgets/app_loader.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_view.dart';
 import 'package:shopease/features/cart/presentation/pages/cart_page.dart';
 import 'package:shopease/features/theme/presentation/widgets/theme_toggle_button.dart';
-
 import '../bloc/product_bloc.dart';
 import '../bloc/product_event.dart';
 import '../bloc/product_state.dart';
@@ -20,6 +18,7 @@ class ProductListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         title: const Text(
           'ShopEase',
           style: TextStyle(fontWeight: FontWeight.bold),

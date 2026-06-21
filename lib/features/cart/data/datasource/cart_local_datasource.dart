@@ -1,23 +1,25 @@
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:shopease/core/constants/app_constants.dart';
 import '../models/cart_item_model.dart';
 
 class CartLocalDataSource {
-  static const String boxName = 'cart_box';
-  static const String cartKey = 'cart_items';
-
+  /// Opens the Hive box for cart items.
+  /// If the box is already open,
+  /// it returns the existing instance;
+  /// otherwise, it opens a new box.
   Future<Box> _openBox() async {
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box(boxName);
+    if (Hive.isBoxOpen(AppConstants.cartBoxName)) {
+      return Hive.box(AppConstants.cartBoxName);
     }
 
-    return await Hive.openBox(boxName);
+    return await Hive.openBox(AppConstants.cartBoxName);
   }
 
   /// Get all cart items
   Future<List<CartItemModel>> getCartItems() async {
     final box = await _openBox();
 
-    final List<dynamic> data = box.get(cartKey, defaultValue: []);
+    final List<dynamic> data = box.get(AppConstants.cartKey, defaultValue: []);
 
     return data
         .map((item) => CartItemModel.fromJson(Map<String, dynamic>.from(item)))
@@ -30,13 +32,13 @@ class CartLocalDataSource {
 
     final data = items.map((item) => item.toJson()).toList();
 
-    await box.put(cartKey, data);
+    await box.put(AppConstants.cartKey, data);
   }
 
   /// Clear cart
   Future<void> clearCart() async {
     final box = await _openBox();
 
-    await box.delete(cartKey);
+    await box.delete(AppConstants.cartKey);
   }
 }

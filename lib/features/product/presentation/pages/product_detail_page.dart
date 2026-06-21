@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/widgets/app_loader.dart';
 import '../../../../core/widgets/price_text.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/section_title.dart';
@@ -57,9 +56,15 @@ class ProductDetailPage extends StatelessWidget {
                   height: 320,
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  placeholder: (_, __) =>
-                      const SizedBox(height: 320, child: AppLoader()),
-                  errorWidget: (_, __, ___) => const SizedBox(
+
+                  placeholder: (_, _) => Container(
+                    height: 320,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
+                  ),
+
+                  errorWidget: (_, _, _) => const SizedBox(
                     height: 320,
                     child: Center(
                       child: Icon(Icons.broken_image_outlined, size: 60),

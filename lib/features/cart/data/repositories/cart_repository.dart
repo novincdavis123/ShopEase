@@ -6,10 +6,12 @@ class CartRepository {
 
   CartRepository(this.localDataSource);
 
+  /// Get all cart items
   Future<List<CartItemModel>> getCartItems() async {
     return await localDataSource.getCartItems();
   }
 
+  /// Save cart items
   Future<void> addToCart(CartItemModel item) async {
     final items = await localDataSource.getCartItems();
 
@@ -26,6 +28,7 @@ class CartRepository {
     await localDataSource.saveCartItems(items);
   }
 
+  /// Remove item from cart
   Future<void> removeFromCart(int productId) async {
     final items = await localDataSource.getCartItems();
 
@@ -34,6 +37,7 @@ class CartRepository {
     await localDataSource.saveCartItems(items);
   }
 
+  /// Increase quantity of an item in the cart
   Future<void> increaseQuantity(int productId) async {
     final items = await localDataSource.getCartItems();
 
@@ -48,6 +52,7 @@ class CartRepository {
     }
   }
 
+  /// Decrease quantity of an item in the cart
   Future<void> decreaseQuantity(int productId) async {
     final items = await localDataSource.getCartItems();
 
@@ -66,10 +71,12 @@ class CartRepository {
     }
   }
 
+  /// Clear cart
   Future<void> clearCart() async {
     await localDataSource.clearCart();
   }
 
+  /// Get total price of items in the cart
   Future<double> getTotalPrice() async {
     final items = await localDataSource.getCartItems();
 
