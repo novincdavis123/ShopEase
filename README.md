@@ -139,23 +139,23 @@ https://dummyjson.com/products
 
 ### Product Listing
 
-![Product Listing](screenshots/light_home.png)
+![Product Listing](screenshots/light_home.jpg)
 
 ### Product Detail
 
-![Product Detail](screenshots/light_detail.png)
+![Product Detail](screenshots/light_detail.jpg)
 
 ### Cart Page
 
-![Cart Page](screenshots/light_cart.png)
+![Cart Page](screenshots/light_cart.jpg)
 
 ### Dark Mode
 
-![Dark Home](screenshots/dark_home.png)
+![Dark Home](screenshots/dark_home.jpg)
 
-![Dark Detail](screenshots/dark_detail.png)
+![Dark Detail](screenshots/dark_detail.jpg)
 
-![Dark Cart](screenshots/dark_cart.png)
+![Dark Cart](screenshots/dark_cart.jpg)
 
 ## Getting Started
 
